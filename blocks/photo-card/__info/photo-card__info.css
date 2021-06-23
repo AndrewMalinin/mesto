@@ -1,0 +1,11 @@
+.photo-card__info {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 25px 15px 0 21px;
+  background-color: #FFF;
+  color: #000;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

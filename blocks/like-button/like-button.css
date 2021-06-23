@@ -1,0 +1,13 @@
+.like-button {
+  background-color: transparent;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  border-style: none;
+  transition: opacity 0.3s ease-in;
+}
+
+.like-button:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}

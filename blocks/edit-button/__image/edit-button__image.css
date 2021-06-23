@@ -1,0 +1,15 @@
+.edit-button__image {
+  margin: auto;
+}
+
+@media screen and (max-width:767px){
+  .edit-button__image {
+    height: 7.5px;
+  }
+}
+
+@media screen and (min-width:768px){
+  .edit-button__image {
+    height: 10px;
+  }
+}

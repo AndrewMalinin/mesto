@@ -1,0 +1,22 @@
+.profile__status {
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: normal;
+}
+
+@media screen and (max-width:889px){
+  .profile__status {
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+  }
+}
+
+@media screen and (min-width:890px){
+  .profile__status {
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
