@@ -6,8 +6,7 @@
   font-weight: 500;
   vertical-align: text-bottom;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden
+  overflow: hidden;
 }
 
 @media screen and (max-width:889px){
