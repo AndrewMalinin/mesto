@@ -1,7 +1,8 @@
 .add-button {
   background-color: transparent;
   align-items: center;
-  border: 1px solid #FFFFFF;
+  border: 2px solid #FFFFFF;
+  border-radius: 2px;
   box-sizing: border-box;
   background-image: url(../../images/icons/icon-plus.svg);
   background-origin: content-box;

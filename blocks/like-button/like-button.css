@@ -5,6 +5,8 @@
   margin: 0;
   border-style: none;
   transition: opacity 0.3s ease-in;
+  display: flex;
+  align-items: center;
 }
 
 .like-button:hover {

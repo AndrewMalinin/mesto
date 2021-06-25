@@ -4,6 +4,9 @@
   white-space: nowrap;
   font-style: normal;
   font-weight: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden
 }
 
 @media screen and (max-width:889px){
@@ -11,6 +14,7 @@
     font-size: 14px;
     line-height: 17px;
     text-align: center;
+    max-width: 200px;
   }
 }
 
@@ -18,5 +22,6 @@
   .profile__status {
     font-size: 18px;
     line-height: 22px;
+    max-width: 500px;
   }
 }
