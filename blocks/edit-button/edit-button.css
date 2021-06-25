@@ -3,7 +3,12 @@
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  border: 1px solid #FFFFFF;
+  background-image: url(../../images/icons/icon-edit.svg);
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-clip: content-box;
+  background-position: center;
+  border: 1px solid #fff;
   box-sizing: border-box;
   outline: none;
   padding: 0;
@@ -21,6 +26,7 @@
   .edit-button {
     width: 18px;
     height: 18px;
+    background-size: 7.5px 7.5px;
   }
 }
 
@@ -28,5 +34,6 @@
   .edit-button {
     width: 24px;
     height: 24px;
+    background-size: 10px 10px;
   }
 }

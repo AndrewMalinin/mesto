@@ -22,15 +22,11 @@
         <div class="profile__info">
           <div class="profile__editable-parametr">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <button class="profile__edit-button edit-button">
-              <img src="./images/icons/icon-edit.svg" alt="Кнопка редактирования профиля" class="edit-button__image">
-            </button>
+            <button class="profile__edit-button edit-button"></button>
           </div>
           <h2 class="profile__status">Исследователь океана</h2>
         </div>
-        <button class="profile__add-button add-button">
-          <img src="./images/icons/icon-plus.svg" alt="Кнопка добавить фото" class="add-button__image">
-        </button>
+        <button class="profile__add-button add-button"></button>
       </section>
 
 
@@ -106,6 +102,21 @@
 
 
   </div>
+
+  <div class="popup ">
+    <div class="popup__container">
+      <button class="popup__close-button"></button>
+      <form action="" class="popup__form form">
+        <h2 class="form__heading">Редактировать профиль</h2>
+        <fieldset class="form__input-container">
+          <input type="text" class="form__item" id="name-input" placeholder="Введите ваше имя">
+          <input type="text" class="form__item" id="status-input" placeholder="Введите вашу профессию">
+        </fieldset>
+        <input type="submit" value="Сохранить" class="form__submit-button">
+      </form>
+    </div>
+  </div>
+  <script src="./scritps/index.js"></script>
 </body>
 
 </html>

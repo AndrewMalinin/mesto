@@ -1,0 +1,24 @@
+.form__item {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 30px 0 13px 0;
+  height: 57px;
+  box-sizing: border-box;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.form__item::placeholder {
+  opacity: 0.4;
+}
+
+
+/*Скрываем плейсхолдер при клике, чтобы не отвлекал*/
+.form__item:focus::-webkit-input-placeholder { color:transparent; }
+.form__item:focus:-moz-placeholder { color:transparent; }
+.form__item:focus::-moz-placeholder { color:transparent; }
+.form__item:focus:-ms-input-placeholder { color:transparent; }
