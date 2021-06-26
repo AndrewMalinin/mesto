@@ -4,9 +4,20 @@ let initElements = ()=>{
   const statusInput = document.querySelector('#status-input');
   const profileName = document.querySelector('.profile__name');
   const statusName = document.querySelector('.profile__status');
+  const editButton = document.querySelector('.profile__edit-button');
+  const closeButton = document.querySelector('.popup__close-button');
+  const form = document.querySelector('.form');
+
+  const popupOpen = ()=> {
+    popup.classList.add('popup_opened');
+  }
+
+  const popupClose = ()=> {
+    popup.classList.remove('popup_opened');  
+  }
 
   const handleEditButtonClick = ()=> {
-    popup.classList.add('popup_opened');
+    popupOpen();
     nameInput.value = profileName.textContent;
     statusInput.value = statusName.textContent;
   }
@@ -15,17 +26,17 @@ let initElements = ()=>{
     e.preventDefault();
     profileName.textContent = nameInput.value;
     statusName.textContent = statusInput.value;
-    popup.classList.remove('popup_opened');
+    popupClose();
   }
 
   const handleCloseButtonClick = ()=> {
-    popup.classList.remove('popup_opened');
+    popupClose();
   }
 
-  document.querySelector('.profile__edit-button').addEventListener('click', handleEditButtonClick);
-  document.querySelector('.popup__close-button').addEventListener('click', handleCloseButtonClick);
-  document.querySelector('.form').addEventListener('submit', handleFormSubmit);
+  editButton.addEventListener('click', handleEditButtonClick);
+  closeButton.addEventListener('click', handleCloseButtonClick);
+  form.addEventListener('submit', handleFormSubmit);
 }
 
-document.addEventListener("DOMContentLoaded", initElements);
+initElements();
 

@@ -11,14 +11,14 @@
   }
 }
 
-@media screen and (min-width:620px) and (max-width:889px){
+@media screen and (min-width:620px) and (max-width:909px){
   .footer {
     padding: 57px 0 36px 0;
     width: 581px;
   }
 }
 
-@media screen and (min-width:890px){
+@media screen and (min-width:910px){
   .footer {
     padding: 67px 0 60px 0;
     width: 100%;

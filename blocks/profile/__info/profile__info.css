@@ -7,13 +7,13 @@
 }
 
 
-@media screen and (min-width:889px) {
+@media screen and (min-width:909px) {
   .profile__info {
     justify-content: center;
   }
 }
 
-@media screen and (max-width:890px) {
+@media screen and (max-width:910px) {
   .profile__info {
     margin-bottom: 36px;
   }

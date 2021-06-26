@@ -2,13 +2,13 @@
   margin: auto 0 auto auto;
 }
 
-@media screen and (max-width:889px){
+@media screen and (max-width:909px){
   .add-button {
     width: 100%;
   }
 }
 
-@media screen and (min-width:890px){
+@media screen and (min-width:910px){
   .add-button {
     width: 150px;
   }

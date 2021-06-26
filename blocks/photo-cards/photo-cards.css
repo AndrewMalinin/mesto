@@ -9,7 +9,7 @@
   }
 }
 
-@media screen and (min-width:620px) and (max-width:889px){
+@media screen and (min-width:620px) and (max-width:909px){
   .photo-cards {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -17,7 +17,7 @@
   }
 }
 
-@media screen and (min-width:890px){
+@media screen and (min-width:910px){
   .photo-cards {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;

@@ -2,7 +2,7 @@
   display: flex;
 }
 
-@media screen and (max-width:889px){
+@media screen and (max-width:909px){
   .profile {
     flex-direction: column;
     justify-content: flex-start;
@@ -12,7 +12,7 @@
   }
 }
 
-@media screen and (min-width:890px){
+@media screen and (min-width:910px){
   .profile {
     flex-direction: row;
     padding-bottom: 47.25px;

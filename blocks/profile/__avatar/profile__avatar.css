@@ -6,14 +6,14 @@
 
 }
 
-@media screen and (max-width:889px){
+@media screen and (max-width:909px){
   .profile__avatar {
     flex-direction: column;
     margin-bottom: 22.25px;
   }
 }
 
-@media screen and (min-width:890px){
+@media screen and (min-width:910px){
   .profile__avatar {
     flex-direction: row;
     margin-right: 30px;
