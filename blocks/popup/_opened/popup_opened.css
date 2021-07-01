@@ -1,3 +1,14 @@
 .popup_opened {
   display: flex;
+  opacity: 0;
+  animation: smooth-appearance 0.4s ease-out forwards;
+}
+
+@keyframes smooth-appearance {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

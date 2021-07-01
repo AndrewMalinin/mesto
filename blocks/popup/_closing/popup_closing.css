@@ -1,0 +1,13 @@
+.popup_closing {
+  display: flex;
+  animation: smooth-disappearance 0.4s ease-in forwards;
+}
+
+@keyframes smooth-disappearance {
+  from{
+    opacity: 1;
+  }
+  to{
+    opacity: 0;
+  }
+}

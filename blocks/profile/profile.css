@@ -2,13 +2,23 @@
   display: flex;
 }
 
-@media screen and (max-width:909px){
+
+@media screen and (max-width:619px){
   .profile {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     padding-bottom: 36px;
+  }
+}
 
+@media screen and (min-width:620px) and (max-width:909px){
+  .profile {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-bottom: 36px;
+    min-width: 581px;
   }
 }
 
@@ -16,5 +26,6 @@
   .profile {
     flex-direction: row;
     padding-bottom: 47.25px;
+    min-width: 880px;
   }
 }
