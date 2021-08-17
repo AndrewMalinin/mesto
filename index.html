@@ -39,10 +39,10 @@
       <form action="#" class="popup__form form" name="edit-profile-form">
         <h2 class="form__heading">Редактировать профиль</h2>
         <fieldset class="form__input-container">
-          <input type="text" class="form__item" id="name-input" name="name" placeholder="Введите имя">
-          <input type="text" class="form__item" id="status-input" name="status" placeholder="Введите род деятельности">
+          <input type="text" class="form__item" id="name-input" name="name" placeholder="Введите имя" required minlength="2" maxlength="40">
+          <input type="text" class="form__item" id="status-input" name="status" placeholder="О Себе" required minlength="2" maxlength="200">
         </fieldset>
-        <button type="submit" class="form__submit-button">Сохранить</button>
+        <button type="submit" class="form__submit-button form__submit-button_inactive" disabled>Сохранить</button>
       </form>
     </div>
   </div>
@@ -53,10 +53,12 @@
       <form action="#" class="popup__form form" name="add-card-form">
         <h2 class="form__heading">Новое место</h2>
         <fieldset class="form__input-container">
-          <input type="text" class="form__item" id="title-input" name="title" placeholder="Название">
-          <input type="text" class="form__item" id="photo-link-input" name="photo-link" placeholder="Ссылка на картинку">
+          <input type="text" class="form__item" id="title-input" name="title" placeholder="Название" required minlength="2" maxlength="30">
+          <span class="form__input-error title-input-error"></span>
+          <input type="text" class="form__item" id="photo-link-input" name="photo-link" placeholder="Ссылка на картинку" required>
+          <span class="form__input-error photo-link-error"></span>
         </fieldset>
-        <button type="submit" class="form__submit-button">Создать</button>
+        <button type="submit" class="form__submit-button form__submit-button_inactive"disabled>Создать</button>
       </form>
     </div>
   </div>
@@ -83,5 +85,6 @@
   </template>
 
   <script src="./scritps/index.js"></script>
+  <script src="./scritps/validate.js"></script>
 </body>
 </html>
