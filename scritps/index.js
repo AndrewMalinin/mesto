@@ -165,12 +165,10 @@ const handlePhotoClick = (e)=> {
 
 const handleEditButtonClick = ()=> {
   editProfilePopupOpen();
-  nameInput.value = profileName.textContent;
-  statusInput.value = statusName.textContent;
+  substituteTextInEditProfileForm();
 }
 
-const handleEditProfileFormSubmit = (e)=>{
-  e.preventDefault();
+const handleEditProfileFormSubmit = ()=>{
   profileName.textContent = nameInput.value;
   statusName.textContent = statusInput.value;
   editProfilePopupClose();
@@ -182,8 +180,7 @@ const handleAddButtonClick = ()=> {
   addCardPopupOpen();
 }
 
-const handleAddCardFormSubmit = (e)=>{
-  e.preventDefault();
+const handleAddCardFormSubmit = ()=>{
   addNewCard({
     name: cardTitleInput.value,
     link: cardLinkInput.value,
@@ -196,13 +193,37 @@ const handleImageError = (e)=> {
   e.target.src = './images/damaged-photo.jpg';
   e.target.title = 'Ошибка при загрузке фото';
 }
+
+const handleEscKeyDown = ()=>{
+  const openedPopup = document.querySelector('.popup_opened');
+  if (null !== openedPopup) {
+    popupClose(openedPopup);
+  }
+}
+
+/*================================= Forms ===================================*/
+
+const substituteTextInEditProfileForm = ()=>{
+  nameInput.value = profileName.textContent;
+  statusInput.value = statusName.textContent;
+}
+
 /*================================= Main ====================================*/
+substituteTextInEditProfileForm();
 editButton.addEventListener('click', handleEditButtonClick);
+editProfilePopup.addEventListener('click', editProfilePopupClose);
 editProfilePopupCloseButton.addEventListener('click', editProfilePopupClose);
-editProfileForm.addEventListener('submit', handleEditProfileFormSubmit);
+
 
 addButton.addEventListener('click', handleAddButtonClick);
+addCardPopup.addEventListener('click', addCardPopupClose);
 addCardPopupCloseButton.addEventListener('click', addCardPopupClose);
-addCardForm.addEventListener('submit', handleAddCardFormSubmit);
+
+
+document.body.addEventListener('keydown', (e)=>{
+  if (e.key === 'Escape') {
+    handleEscKeyDown();
+  }
+})
 
 insertInitialCards();
