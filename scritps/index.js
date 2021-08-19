@@ -211,13 +211,21 @@ const substituteTextInEditProfileForm = ()=>{
 /*================================= Main ====================================*/
 substituteTextInEditProfileForm();
 editButton.addEventListener('click', handleEditButtonClick);
-editProfilePopup.addEventListener('click', editProfilePopupClose);
 editProfilePopupCloseButton.addEventListener('click', editProfilePopupClose);
+editProfilePopup.addEventListener('click', (e)=>{
+  if (e.target.classList.contains('popup')){
+    editProfilePopupClose();
+  }
+})
 
 
 addButton.addEventListener('click', handleAddButtonClick);
-addCardPopup.addEventListener('click', addCardPopupClose);
 addCardPopupCloseButton.addEventListener('click', addCardPopupClose);
+addCardPopup.addEventListener('click', (e)=>{
+  if (e.target.classList.contains('popup')){
+    addCardPopupClose();
+  }
+})
 
 
 document.body.addEventListener('keydown', (e)=>{
