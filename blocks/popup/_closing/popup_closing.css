@@ -1,4 +1,4 @@
-.popup_closing {
+/* .popup_closing {
   display: flex;
   animation: smooth-disappearance 0.4s ease-in forwards;
 }
@@ -10,4 +10,4 @@
   to{
     opacity: 0;
   }
-}
+} */

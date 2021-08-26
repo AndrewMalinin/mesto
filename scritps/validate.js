@@ -1,7 +1,3 @@
-const formSubmitHandlersList = {
-  'add-card-form' : handleAddCardFormSubmit,
-  'edit-profile-form'  :  handleEditProfileFormSubmit
-}
 
 
 const showInputError = (formElement, inputElement, errorMessage, settings) => {
@@ -42,14 +38,6 @@ const enableValidation = (settings) => {
   const formList = Array.from(document.querySelectorAll(settings.formSelector));
   let formInputList;
   formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      formInputList = Array.from(formElement.querySelectorAll(settings.inputSelector))
-      if (!hasInvalidInput(formInputList)) {
-        formSubmitHandlersList[formElement.id]();
-      }
-    });
-
     setEventListeners(formElement, settings);
   });
 };
@@ -71,11 +59,3 @@ const toggleButtonState = function(inputList, buttonElement, inactiveButtonClass
   }
 }
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.form__item',
-  submitButtonSelector: '.form__submit-button',
-  inactiveButtonClass: 'form__submit-button_inactive',
-  inputErrorClass: 'form__item_type_error',
-  errorClass: 'form__input-error_active'
-});

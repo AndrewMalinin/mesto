@@ -72,16 +72,15 @@ const parseCard = (cardNode)=> {
 
 /*=========================== Popup functions ===============================*/
 
-const popupOpen = (popupNode)=> {
+const openPopup = (popupNode)=> {
   popupNode.classList.add('popup_opened');
+  addEscListener();
 }
 
-const popupClose = (popupNode)=> {
+const closePopup = (popupNode)=> {
   popupNode.classList.add('popup_closing');
   popupNode.classList.remove('popup_opened');
-  setTimeout(()=>{
-    popupNode.classList.remove('popup_closing');
-  },popupAnimationDuration_ms)
+  removeEscListener();
 }
 
 const openPhotoPopup = (cardDescription)=> {
@@ -90,10 +89,35 @@ const openPhotoPopup = (cardDescription)=> {
   photo.alt = cardDescription.alt;
   photoTitle.textContent = cardDescription.name;
 
-  popupOpen(photoPopup);
-  addEscListener();
+  openPopup(photoPopup);
 }
 
+const addEscListener = ()=>{
+  document.addEventListener('keydown', handleEscKeyDown);
+}
+
+const removeEscListener = ()=> {
+  document.removeEventListener('keydown', handleEscKeyDown);
+}
+
+const addFormSumbitHandlers = ()=>{
+
+  addCardForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const formInputList = Array.from(addCardForm.querySelectorAll('.form__item'))
+    if (!hasInvalidInput(formInputList)) {
+      handleAddCardFormSubmit();
+    }
+  });
+
+  editProfileForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const formInputList = Array.from(editProfileForm.querySelectorAll('.form__item'))
+    if (!hasInvalidInput(formInputList)) {
+      handleEditProfileFormSubmit();
+    }
+  });
+}
 /*================================ Handlers =================================*/
 
 const handleLikeButtonClick = (e)=> {
@@ -110,24 +134,21 @@ const handlePhotoClick = (e)=> {
 
 const handleEditButtonClick = ()=> {
   substituteTextInEditProfileForm();
-  popupOpen(editProfilePopup);
-  addEscListener();
+  openPopup(editProfilePopup);
 }
 
 const handleEditProfileFormSubmit = ()=>{
   profileName.textContent = nameInput.value;
   statusName.textContent = statusInput.value;
-  popupClose(editProfilePopup);
+  closePopup(editProfilePopup);
   removeEscListener();
 }
 
 const handleAddButtonClick = ()=> {
   cardTitleInput.value = '';
   cardLinkInput.value = '';
-  addCardSubmitButton.classList.add('form__submit-button_inactive');
-  addCardSubmitButton.disabled = true;
-  popupOpen(addCardPopup);
-  addEscListener();
+  toggleButtonState([cardTitleInput, cardLinkInput], addCardSubmitButton, 'form__submit-button_inactive');
+  openPopup(addCardPopup);
 }
 
 const handleAddCardFormSubmit = ()=>{
@@ -136,8 +157,7 @@ const handleAddCardFormSubmit = ()=>{
     link: cardLinkInput.value,
     alt: "Фото загружено пользователем"
   })
-  popupClose(addCardPopup);
-  removeEscListener();
+  closePopup(addCardPopup);
 }
 
 const handleImageError = (e)=> {
@@ -145,32 +165,25 @@ const handleImageError = (e)=> {
   e.target.title = 'Ошибка при загрузке фото';
 }
 
-const addEscListener = ()=>{
-  document.addEventListener('keydown', handleEscKeyDown);
-}
-
-const removeEscListener = ()=> {
-  document.removeEventListener('keydown', handleEscKeyDown);
-}
 
 const handleEscKeyDown = (e)=>{
   if (e.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_opened');
     if (openedPopup !== null) {
-      popupClose(openedPopup);
-      removeEscListener();
+      closePopup(openedPopup);
     }
   }
 }
 
 const handlePopupClick = (e)=>{
+
+  // Объединение двух условий в одно (с помощью ||) невозможно,
+  // так как две этих условных конструкции выполняют разный код (функции принимают ражные аргументы)
   if (e.target.classList.contains('popup')){
-    popupClose(e.target);
-    removeEscListener();
+    closePopup(e.target);
   }
   if (e.target.classList.contains('popup__close-button')) {
-    popupClose(e.target.parentNode.parentNode);
-    removeEscListener();
+    closePopup(e.target.parentNode.parentNode);
   }
 }
 
@@ -190,3 +203,13 @@ addCardPopup.addEventListener('click', handlePopupClick);
 photoPopup.addEventListener('click', handlePopupClick);
 
 insertInitialCards();
+addFormSumbitHandlers();
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.form__item',
+  submitButtonSelector: '.form__submit-button',
+  inactiveButtonClass: 'form__submit-button_inactive',
+  inputErrorClass: 'form__item_type_error',
+  errorClass: 'form__input-error_active',
+});

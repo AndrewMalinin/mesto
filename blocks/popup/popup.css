@@ -4,8 +4,11 @@
   background-color: rgba(0, 0, 0, 0.5);
   left:0;
   top:0;
+  height: 0;
+  opacity: 0;
   position: fixed;
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
+  transition: height 0ms 400ms, opacity 400ms 0ms;
 }
