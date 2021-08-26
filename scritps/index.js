@@ -78,7 +78,6 @@ const openPopup = (popupNode)=> {
 }
 
 const closePopup = (popupNode)=> {
-  popupNode.classList.add('popup_closing');
   popupNode.classList.remove('popup_opened');
   removeEscListener();
 }
