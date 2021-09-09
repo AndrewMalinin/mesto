@@ -1,3 +1,41 @@
+import { Card } from './Card.js';
+
+import { FormValidator } from './FormValidator.js';
+
+
+const initialCards = [
+  {
+    name: 'Сочи',
+    link: './images/photo-sochi.jpg',
+    alt: 'Фото олимпийских колец'
+  },
+  {
+    name: 'Карелия',
+    link: './images/photo-karelia.jpg',
+    alt: 'Фото божьей коровки во мхе'
+  },
+  {
+    name: 'Горный Алтай',
+    link: './images/photo-altai.jpg',
+    alt: 'Фото реки Катунь'
+  },
+  {
+    name: 'Река Вуокса',
+    link: './images/photo-vyoksa.jpg',
+    alt: 'Фото камней на берегу Вуоксы под луной'
+  },
+  {
+    name: 'Тверская область',
+    link: './images/photo-tver.jpg',
+    alt: 'Фото заснеженного леса'
+  },
+  {
+    name: 'Шерегеш',
+    link: './images/photo-sheregesh.jpg',
+    alt: 'Фото фуникулёра на секторе Е, Шерегеш'
+  }
+];
+
 const editProfilePopup = document.querySelector('#edit-profile-popup');
 const editProfileForm = editProfilePopup.querySelector('form[name=edit-profile-form]');
 const editProfilePopupCloseButton = editProfilePopup.querySelector('.popup__close-button');
@@ -25,51 +63,23 @@ const photoTitle = photoPopup.querySelector('.popup__photo-title');
 const popupAnimationDuration_ms = 400;
 
 /*============================== Cards function =============================*/
-const createCard = (cardDescription)=> {
-  const newCard = cardTemplate.querySelector('.photo-card').cloneNode(true);
-  const cardTitle = newCard.querySelector('.photo-card__title');
-  const cardImage = newCard.querySelector('.photo-card__photo');
-  const cardLikeButton = newCard.querySelector('.photo-card__like-button');
-  const cardDeleteButton = newCard.querySelector('.photo-card__delete-button');
 
-  cardTitle.textContent = cardDescription.name;
-  cardImage.src = cardDescription.link || './images/damaged-photo.jpg';
-  cardImage.alt = cardDescription.alt;
-
-  cardLikeButton.addEventListener('click', handleLikeButtonClick);
-  cardDeleteButton.addEventListener('click', handleDeleteButtonClick)
-  cardImage.addEventListener('error', handleImageError);
-  cardImage.addEventListener('click', handlePhotoClick);
-
-  return newCard;
-}
-
-const insertCard = (card)=> {
-  cardsContainer.prepend(card);
-}
-
-const addNewCard = (cardDescription)=> {
-  insertCard(createCard(cardDescription));
-}
-
-const insertInitialCards = ()=> {
-  initialCards.forEach((item, index)=>{
-    const card = createCard(item);
-    card.style.animationDelay = `${index*0.05}s`;
-    insertCard(card);
-  });
-}
-
-const parseCard = (cardNode)=> {
-  const title = cardNode.querySelector('.photo-card__title');
-  const photo = cardNode.querySelector('.photo-card__photo')
-  return {
-    name: title.textContent,
-    link: photo.src,
-    alt: photo.alt
+  // Без параметров в этом методе не обойтись, если мы захотим переиспользовать
+  // класс Card, вставляя карточки в другое место, или в разные контейнеры
+  function insertCard(card){
+    cardsContainer.prepend(card);
   }
-}
 
+
+  const insertInitialCards = ()=> {
+    initialCards.forEach((item, index, arr)=>{
+      const card = new Card('#card-template', item);
+      const cardElement = card.createCard();
+
+      cardElement.style.animationDelay = `${(arr.length - index)*0.05}s`;
+      insertCard(cardElement);
+    });
+  }
 /*=========================== Popup functions ===============================*/
 
 const openPopup = (popupNode)=> {
@@ -79,6 +89,7 @@ const openPopup = (popupNode)=> {
 
 const closePopup = (popupNode)=> {
   popupNode.classList.remove('popup_opened');
+  popupNode.inne
   removeEscListener();
 }
 
@@ -104,7 +115,7 @@ const addFormSumbitHandlers = ()=>{
   addCardForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const formInputList = Array.from(addCardForm.querySelectorAll('.form__item'))
-    if (!hasInvalidInput(formInputList)) {
+    if (!FormValidator.hasInvalidInput(formInputList)) {
       handleAddCardFormSubmit();
     }
   });
@@ -112,24 +123,12 @@ const addFormSumbitHandlers = ()=>{
   editProfileForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const formInputList = Array.from(editProfileForm.querySelectorAll('.form__item'))
-    if (!hasInvalidInput(formInputList)) {
+    if (!FormValidator.hasInvalidInput(formInputList)) {
       handleEditProfileFormSubmit();
     }
   });
 }
 /*================================ Handlers =================================*/
-
-const handleLikeButtonClick = (e)=> {
-  e.target.classList.toggle('like-button_filled');
-}
-
-const handleDeleteButtonClick = (e)=> {
-  e.target.parentNode.remove();
-}
-
-const handlePhotoClick = (e)=> {
-  openPhotoPopup(parseCard(e.target.parentNode));
-}
 
 const handleEditButtonClick = ()=> {
   substituteTextInEditProfileForm();
@@ -146,16 +145,20 @@ const handleEditProfileFormSubmit = ()=>{
 const handleAddButtonClick = ()=> {
   cardTitleInput.value = '';
   cardLinkInput.value = '';
-  toggleButtonState([cardTitleInput, cardLinkInput], addCardSubmitButton, 'form__submit-button_inactive');
+  addCardFormValidator.toggleButtonState();
   openPopup(addCardPopup);
 }
 
 const handleAddCardFormSubmit = ()=>{
-  addNewCard({
+  const card = new Card('#card-template', {
     name: cardTitleInput.value,
     link: cardLinkInput.value,
     alt: "Фото загружено пользователем"
-  })
+  });
+
+  const cardElement = card.createCard();
+
+  insertCard(cardElement);
   closePopup(addCardPopup);
 }
 
@@ -197,18 +200,27 @@ const substituteTextInEditProfileForm = ()=>{
 editButton.addEventListener('click', handleEditButtonClick);
 addButton.addEventListener('click', handleAddButtonClick);
 
-editProfilePopup.addEventListener('click', handlePopupClick);
-addCardPopup.addEventListener('click', handlePopupClick);
-photoPopup.addEventListener('click', handlePopupClick);
+// Вешаем обработчики на событие mousedown, а не на click, чтобы убрать неприятный баг
+// при котором mousedown внутри формы и mouseup вне формы(мышка отводится в сторону во время набора текста),
+// приводило к закрытию формы
+editProfilePopup.addEventListener('mousedown', handlePopupClick);
+addCardPopup.addEventListener('mousedown', handlePopupClick);
+photoPopup.addEventListener('mousedown', handlePopupClick);
 
 insertInitialCards();
 addFormSumbitHandlers();
 
-enableValidation({
+
+const settings = {
   formSelector: '.popup__form',
   inputSelector: '.form__item',
   submitButtonSelector: '.form__submit-button',
   inactiveButtonClass: 'form__submit-button_inactive',
   inputErrorClass: 'form__item_type_error',
   errorClass: 'form__input-error_active',
-});
+};
+
+const editProfileFormValidator = new FormValidator(settings, editProfileForm);
+const addCardFormValidator = new FormValidator(settings, addCardForm);
+editProfileFormValidator.enableValidation();
+addCardFormValidator.enableValidation();
