@@ -1,8 +1,9 @@
 
 export class Card {
-  constructor(cardTemplateSelector, cardDescription, ) {
+  constructor(cardTemplateSelector, cardDescription, cardImageClickCallback = {}) {
     this._cardTemplateSelector = cardTemplateSelector;
     this._cardDescription = cardDescription;
+    this._cardImageClickCallback = cardImageClickCallback;
   }
 
 
@@ -13,6 +14,7 @@ export class Card {
     this._cardLikeButton = this._cardElement.querySelector('.photo-card__like-button');
     this._cardDeleteButton = this._cardElement.querySelector('.photo-card__delete-button');
     this._fillCard();
+    this._setEventListeners();
 
     return this._cardElement;
   }
@@ -26,35 +28,29 @@ export class Card {
   }
 
   _setEventListeners() {
-    this._cardLikeButton.addEventListener('click', ()=>{this._handleLikeButtonClick});
-    this._cardDeleteButton.addEventListener('click',()=>{this._handleDeleteButtonClick})
-    this._cardImage.addEventListener('error', ()=>{this._handleImageError});
-    this._cardImage.addEventListener('click', ()=>{this._handlePhotoClick});
+    this._cardLikeButton.addEventListener('click', ()=>{this._handleLikeButtonClick()});
+    this._cardDeleteButton.addEventListener('click',()=>{this._handleDeleteButtonClick()})
+    this._cardImage.addEventListener('error', ()=>{this._handleImageError()});
+    this._cardImage.addEventListener('click', ()=>{this._handlePhotoClick()});
   }
 
 
-  _handleLikeButtonClick = (e)=> {
-    e.target.classList.toggle('like-button_filled');
+  _handleLikeButtonClick() {
+    this._cardLikeButton.classList.toggle('like-button_filled');
   }
 
-  _handleDeleteButtonClick = (e)=> {
-    e.target.parentNode.remove();
+  _handleDeleteButtonClick() {
+    this._cardElement.remove();
   }
 
-  _handlePhotoClick = (e)=> {
-
-    photo.src = cardDescription.link;
-    photo.alt = cardDescription.alt;
-    photoTitle.textContent = cardDescription.name;
-
-    openPopup(photoPopup);
+  _handleImageError() {
+    this._cardImage.src = './images/damaged-photo.jpg';
+    this._cardImage.title = 'Ошибка загрузки изображения';
   }
 
+  _handlePhotoClick() {
 
-
-
-  getCardDescription(){
-    return this._cardDescription;
+    this._cardImageClickCallback(this._cardDescription)
   }
 
 }

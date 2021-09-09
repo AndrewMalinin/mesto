@@ -1,7 +1,5 @@
 import { Card } from './Card.js';
-
 import { FormValidator } from './FormValidator.js';
-
 
 const initialCards = [
   {
@@ -38,14 +36,11 @@ const initialCards = [
 
 const editProfilePopup = document.querySelector('#edit-profile-popup');
 const editProfileForm = editProfilePopup.querySelector('form[name=edit-profile-form]');
-const editProfilePopupCloseButton = editProfilePopup.querySelector('.popup__close-button');
 const nameInput = editProfileForm.querySelector('#name-input');
 const statusInput = editProfileForm.querySelector('#status-input');
 
 const addCardPopup = document.querySelector('#add-card-popup');
 const addCardForm = addCardPopup.querySelector('form[name=add-card-form]');
-const addCardSubmitButton = addCardPopup.querySelector('.form__submit-button')
-const addCardPopupCloseButton = addCardPopup.querySelector('.popup__close-button');
 const cardTitleInput = addCardForm.querySelector('#title-input');
 const cardLinkInput = addCardForm.querySelector('#photo-link-input');
 
@@ -54,26 +49,19 @@ const statusName = document.querySelector('.profile__status');
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 const cardsContainer = document.querySelector('.photo-cards');
-const cardTemplate = document.querySelector('#card-template').content;
 const photoPopup = document.querySelector('#photo-popup');
-const photoPopupCloseButton = photoPopup.querySelector('.popup__close-button');
 const photo = photoPopup.querySelector('.popup__photo');
 const photoTitle = photoPopup.querySelector('.popup__photo-title');
 
-const popupAnimationDuration_ms = 400;
 
 /*============================== Cards function =============================*/
-
-  // Без параметров в этом методе не обойтись, если мы захотим переиспользовать
-  // класс Card, вставляя карточки в другое место, или в разные контейнеры
-  function insertCard(card){
+  const insertCard = (card)=> {
     cardsContainer.prepend(card);
   }
 
-
   const insertInitialCards = ()=> {
     initialCards.forEach((item, index, arr)=>{
-      const card = new Card('#card-template', item);
+      const card = new Card('#card-template', item, openPhotoPopup);
       const cardElement = card.createCard();
 
       cardElement.style.animationDelay = `${(arr.length - index)*0.05}s`;
@@ -154,17 +142,12 @@ const handleAddCardFormSubmit = ()=>{
     name: cardTitleInput.value,
     link: cardLinkInput.value,
     alt: "Фото загружено пользователем"
-  });
+  }, openPhotoPopup);
 
   const cardElement = card.createCard();
 
   insertCard(cardElement);
   closePopup(addCardPopup);
-}
-
-const handleImageError = (e)=> {
-  e.target.src = './images/damaged-photo.jpg';
-  e.target.title = 'Ошибка при загрузке фото';
 }
 
 
