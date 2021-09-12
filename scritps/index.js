@@ -1,38 +1,6 @@
 import { Card } from './Card.js';
 import { FormValidator } from './FormValidator.js';
 
-const initialCards = [
-  {
-    name: 'Сочи',
-    link: './images/photo-sochi.jpg',
-    alt: 'Фото олимпийских колец'
-  },
-  {
-    name: 'Карелия',
-    link: './images/photo-karelia.jpg',
-    alt: 'Фото божьей коровки во мхе'
-  },
-  {
-    name: 'Горный Алтай',
-    link: './images/photo-altai.jpg',
-    alt: 'Фото реки Катунь'
-  },
-  {
-    name: 'Река Вуокса',
-    link: './images/photo-vyoksa.jpg',
-    alt: 'Фото камней на берегу Вуоксы под луной'
-  },
-  {
-    name: 'Тверская область',
-    link: './images/photo-tver.jpg',
-    alt: 'Фото заснеженного леса'
-  },
-  {
-    name: 'Шерегеш',
-    link: './images/photo-sheregesh.jpg',
-    alt: 'Фото фуникулёра на секторе Е, Шерегеш'
-  }
-];
 
 const editProfilePopup = document.querySelector('#edit-profile-popup');
 const editProfileForm = editProfilePopup.querySelector('form[name=edit-profile-form]');
@@ -59,8 +27,8 @@ const photoTitle = photoPopup.querySelector('.popup__photo-title');
     cardsContainer.prepend(card);
   }
 
-  const insertInitialCards = ()=> {
-    initialCards.forEach((item, index, arr)=>{
+  const insertInitialCards = (cardArray)=> {
+    cardArray.forEach((item, index, arr)=>{
       const card = new Card('#card-template', item, openPhotoPopup);
       const cardElement = card.createCard();
 
@@ -77,7 +45,6 @@ const openPopup = (popupNode)=> {
 
 const closePopup = (popupNode)=> {
   popupNode.classList.remove('popup_opened');
-  popupNode.inne
   removeEscListener();
 }
 
@@ -103,17 +70,13 @@ const addFormSumbitHandlers = ()=>{
   addCardForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const formInputList = Array.from(addCardForm.querySelectorAll('.form__item'))
-    if (!FormValidator.hasInvalidInput(formInputList)) {
-      handleAddCardFormSubmit();
-    }
+    handleAddCardFormSubmit();
   });
 
   editProfileForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const formInputList = Array.from(editProfileForm.querySelectorAll('.form__item'))
-    if (!FormValidator.hasInvalidInput(formInputList)) {
-      handleEditProfileFormSubmit();
-    }
+    handleEditProfileFormSubmit();
   });
 }
 /*================================ Handlers =================================*/
@@ -127,7 +90,6 @@ const handleEditProfileFormSubmit = ()=>{
   profileName.textContent = nameInput.value;
   statusName.textContent = statusInput.value;
   closePopup(editProfilePopup);
-  removeEscListener();
 }
 
 const handleAddButtonClick = ()=> {
@@ -190,7 +152,39 @@ editProfilePopup.addEventListener('mousedown', handlePopupClick);
 addCardPopup.addEventListener('mousedown', handlePopupClick);
 photoPopup.addEventListener('mousedown', handlePopupClick);
 
-insertInitialCards();
+insertInitialCards([
+  {
+    name: 'Сочи',
+    link: './images/photo-sochi.jpg',
+    alt: 'Фото олимпийских колец'
+  },
+  {
+    name: 'Карелия',
+    link: './images/photo-karelia.jpg',
+    alt: 'Фото божьей коровки во мхе'
+  },
+  {
+    name: 'Горный Алтай',
+    link: './images/photo-altai.jpg',
+    alt: 'Фото реки Катунь'
+  },
+  {
+    name: 'Река Вуокса',
+    link: './images/photo-vyoksa.jpg',
+    alt: 'Фото камней на берегу Вуоксы под луной'
+  },
+  {
+    name: 'Тверская область',
+    link: './images/photo-tver.jpg',
+    alt: 'Фото заснеженного леса'
+  },
+  {
+    name: 'Шерегеш',
+    link: './images/photo-sheregesh.jpg',
+    alt: 'Фото фуникулёра на секторе Е, Шерегеш'
+  }
+]);
+
 addFormSumbitHandlers();
 
 

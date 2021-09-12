@@ -43,16 +43,15 @@ export class FormValidator {
     this._setEventListeners();
   }
 
-  // Объявляем статический метод, чтобы можно было использовать его
-  // для проверки валидности формы при добавлении submit handler'а
-  static hasInvalidInput(inputList) {
-    return inputList.some((inputElement) => {
+
+  _hasInvalidInput() {
+    return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid;
     });
   };
 
   toggleButtonState() {
-    if (FormValidator.hasInvalidInput(this._inputList)) {
+    if (this._hasInvalidInput()) {
       this._buttonElement.classList.add(this._settings.inactiveButtonClass);
       this._buttonElement.disabled = true;
     }

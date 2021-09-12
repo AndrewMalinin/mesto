@@ -1,6 +1,6 @@
 
 export class Card {
-  constructor(cardTemplateSelector, cardDescription, cardImageClickCallback = {}) {
+  constructor(cardTemplateSelector, cardDescription, cardImageClickCallback = function(){}) {
     this._cardTemplateSelector = cardTemplateSelector;
     this._cardDescription = cardDescription;
     this._cardImageClickCallback = cardImageClickCallback;
