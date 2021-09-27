@@ -1,13 +1,12 @@
-
-export class Card {
-  constructor(cardTemplateSelector, cardDescription, cardImageClickCallback = function(){}) {
+export default class Card {
+  constructor(cardTemplateSelector, cardDescription, handleCardClick) {
     this._cardTemplateSelector = cardTemplateSelector;
     this._cardDescription = cardDescription;
-    this._cardImageClickCallback = cardImageClickCallback;
+    this._handleCardClick = handleCardClick;
   }
 
 
-  createCard () {
+  createCard() {
     this._cardElement = document.querySelector(this._cardTemplateSelector).content.cloneNode(true).firstElementChild ;
     this._cardTitle = this._cardElement.querySelector('.photo-card__title');
     this._cardImage = this._cardElement.querySelector('.photo-card__photo');
@@ -19,7 +18,7 @@ export class Card {
     return this._cardElement;
   }
 
-  // Выделяем заполнение карточки данными в отедльный метод, чтобы можно было его переиспользовать
+  // Выделяем заполнение карточки данными в отдельный метод, чтобы можно было его переиспользовать
   // например, если захотим обновить поля карточки каким-нибудь добавленным в будущем инструментом
   _fillCard() {
     this._cardTitle.textContent = this._cardDescription.name;
@@ -49,8 +48,7 @@ export class Card {
   }
 
   _handlePhotoClick() {
-
-    this._cardImageClickCallback(this._cardDescription)
+    this._handleCardClick(this._cardDescription);
   }
 
 }

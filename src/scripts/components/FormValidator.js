@@ -1,6 +1,5 @@
-export class FormValidator {
+export default class FormValidator {
   constructor(settings, formElement) {
-    //Инкапсулируем все внутренние поля класса
     this._settings = settings;
     this._formElement = formElement;
     this._inputList = Array.from(this._formElement.querySelectorAll(this._settings.inputSelector));
