@@ -1,3 +1,4 @@
+const damagedPhoto = new URL('../../images/damaged-photo.jpg', import.meta.url);
 export default class Card {
   constructor(cardTemplateSelector, cardDescription, handleCardClick) {
     this._cardTemplateSelector = cardTemplateSelector;
@@ -22,7 +23,7 @@ export default class Card {
   // например, если захотим обновить поля карточки каким-нибудь добавленным в будущем инструментом
   _fillCard() {
     this._cardTitle.textContent = this._cardDescription.name;
-    this._cardImage.src = this._cardDescription.link || './images/damaged-photo.jpg';
+    this._cardImage.src = this._cardDescription.link || damagedPhoto;
     this._cardImage.alt = this._cardDescription.alt;
   }
 
@@ -43,7 +44,7 @@ export default class Card {
   }
 
   _handleImageError() {
-    this._cardImage.src = './images/damaged-photo.jpg';
+    this._cardImage.src = damagedPhoto;
     this._cardImage.title = 'Ошибка загрузки изображения';
   }
 
