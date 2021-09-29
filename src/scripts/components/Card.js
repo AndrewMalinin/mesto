@@ -1,4 +1,4 @@
-const damagedPhoto = new URL('../../images/damaged-photo.jpg', import.meta.url);
+import { damagedPhoto } from "../utils/constants";
 export default class Card {
   constructor(cardTemplateSelector, cardDescription, handleCardClick) {
     this._cardTemplateSelector = cardTemplateSelector;

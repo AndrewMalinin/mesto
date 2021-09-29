@@ -1,25 +1,25 @@
-import Card from './components/Card.js';
-import PopupWithForm from './components/PopupWithForm.js';
-import PopupWithImage from './components/PopupWithImage.js'
-import FormValidator from './components/FormValidator.js';
-import Section from './components/Section.js';
-import UserInfo from './components/UserInfo.js';
+import Card from '../scripts/components/Card.js';
+import PopupWithForm from '../scripts/components/PopupWithForm.js';
+import PopupWithImage from '../scripts/components/PopupWithImage.js'
+import FormValidator from '../scripts/components/FormValidator.js';
+import Section from '../scripts/components/Section.js';
+import UserInfo from '../scripts/components/UserInfo.js';
+
+import {settings,
+        addCardForm,
+        editProfileForm,
+        nameInput,
+        statusInput,
+        sochiImagePath,
+        tverImagePath,
+        kareliaImagePath,
+        sheregeshImagePath,
+        altaiImagePath,
+        vyoksaImagePath
+} from '../scripts/utils/constants.js'
+
 
 import '../pages/index.css';
-
-//==================== Webpack Image Imports ==================================
-const sochiImagePath = new URL('../images/photo-sochi.jpg', import.meta.url);
-const kareliaImagePath = new URL('../images/photo-karelia.jpg', import.meta.url);
-const altaiImagePath = new URL('../images/photo-altai.jpg', import.meta.url);
-const vyoksaImagePath = new URL('../images/photo-vyoksa.jpg', import.meta.url);
-const tverImagePath = new URL('../images/photo-tver.jpg', import.meta.url);
-const sheregeshImagePath = new URL('../images/photo-sheregesh.jpg', import.meta.url);
-
-//============================== Forms ========================================
-const addCardForm = document.querySelector('form[name=add-card-form]');
-const editProfileForm = document.querySelector('form[name=edit-profile-form]');
-const nameInput = editProfileForm.querySelector('#name-input');
-const statusInput = editProfileForm.querySelector('#status-input');
 
 const substituteTextInEditProfileForm = ({name, status})=>{
   nameInput.value = name;
@@ -27,14 +27,6 @@ const substituteTextInEditProfileForm = ({name, status})=>{
 }
 
 //=============================== Form Validators =============================
-const settings = {
-  formSelector: '.popup__form',
-  inputSelector: '.form__item',
-  submitButtonSelector: '.form__submit-button',
-  inactiveButtonClass: 'form__submit-button_inactive',
-  inputErrorClass: 'form__item_type_error',
-  errorClass: 'form__input-error_active',
-}
 
 const editProfileFormValidator = new FormValidator(settings, editProfileForm);
 const addCardFormValidator = new FormValidator(settings, addCardForm);
@@ -46,6 +38,7 @@ const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 
 addButton.addEventListener('click', ()=>{
+  addCardFormValidator.toggleButtonState();
   addCardPopup.open();
 });
 
@@ -61,13 +54,11 @@ const editProfilePopup = new PopupWithForm('#edit-profile-popup', (inputList)=>{
 });
 
 const addCardPopup = new PopupWithForm('#add-card-popup', (inputList)=>{
-  cardList.addItem({
+  cardList.inserElement(createCard({
     name: inputList.title,
     link: inputList['photo-link'],
     alt: 'Фото добавлено пользователем'
-  });
-
-  cardList.renderItems();
+  }));
 });
 
 photoPopup.setEventListeners();
@@ -78,6 +69,14 @@ addCardPopup.setEventListeners();
 const userInfo = new UserInfo('.profile__name', '.profile__status');
 
 //================================ Cards ======================================
+
+const createCard = function(item) {
+  const card = new Card('#card-template', item, ()=>{
+    photoPopup.open(item);
+  });
+  return card.createCard();
+}
+
 const cardList = new Section({
     items:[
       {
@@ -112,13 +111,7 @@ const cardList = new Section({
       }
     ],
     renderer: (item)=>{
-      const handleCardClick = ()=>{
-        photoPopup.open(item);
-      };
-      const card = new Card('#card-template', item, handleCardClick);
-      const cardElement = card.createCard();
-
-      cardList.inserElement(cardElement);
+      cardList.inserElement(createCard(item));
     }
   }, '.photo-cards');
 

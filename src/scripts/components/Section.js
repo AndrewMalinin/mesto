@@ -7,12 +7,8 @@ export default class Section {
     this._container = document.querySelector(containerSelector);
   }
 
-  addItem(item) {
-    this._items.unshift(item);
-  }
-
   inserElement(element) {
-    this._container.append(element);
+    this._container.prepend(element);
   }
 
   clear() {
