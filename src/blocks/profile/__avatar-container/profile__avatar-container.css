@@ -1,0 +1,20 @@
+.profile__avatar-container {
+  width:120px;
+  height:120px;
+  position: relative;
+  padding: 3.75px 0;
+}
+
+@media screen and (max-width:909px){
+  .profile__avatar-container {
+    flex-direction: column;
+    margin-bottom: 22.25px;
+  }
+}
+
+@media screen and (min-width:910px){
+  .profile__avatar-container {
+    flex-direction: row;
+    margin-right: 30px;
+  }
+}
