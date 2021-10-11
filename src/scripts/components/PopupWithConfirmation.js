@@ -1,38 +1,24 @@
 import Popup from "./Popup";
 
 export default class PopupWithConfirmation extends Popup {
-  constructor(popupSelector) {
+  constructor(popupSelector, handleSubmitCallback) {
     super(popupSelector);
     this._formElement = this._popupElement.querySelector('.form');
+    this._handleSubmitCallback = handleSubmitCallback;
+    this._cache = undefined; //хранит значение, переданное при открытии окна
   }
 
-  open() {
+  setEventListeners() {
+    this._formElement.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      this._handleSubmitCallback(this._cache);
+    });
+    super.setEventListeners();
+  }
+
+  open(cache) {
+    this._cache = cache;
     super.open();
-    return new Promise((resolve, reject)=>{
-      const handleSumbit = (e)=>{
-        e.preventDefault();
-        resolve();
-        this.close();
-        this._formElement.removeEventListener('submit', handleSumbit);
-      }
-
-      const handleReject = (e)=>{
-        this._popupElement.addEventListener('mousedown', (e)=>{
-          if (e.target.classList.contains('popup') ||
-              e.target.classList.contains('popup__close-button')){
-              reject();
-              this.close();
-              this._popupElement.removeEventListener('mousedown', handleReject);
-          }
-        });
-      }
-
-      this._formElement.addEventListener('submit', handleSumbit);
-      this._popupElement.addEventListener('mousedown', handleReject);
-    })
   }
 
-  close() {
-    super.close();
-  }
 }

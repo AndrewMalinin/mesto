@@ -8,6 +8,9 @@ export const editProfileForm = document.querySelector('form[name=edit-profile-fo
 export const updateAvatarForm = document.querySelector('form[name=update-avatar-form]');
 export const nameInput = editProfileForm.querySelector('#name-input');
 export const statusInput = editProfileForm.querySelector('#status-input');
+export const editButton = document.querySelector('.profile__edit-button');
+export const addButton = document.querySelector('.profile__add-button');
+export const updateAvatarButton = document.querySelector('.profile__avatar-container');
 
 
 export const settings = {

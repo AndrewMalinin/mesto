@@ -1,11 +1,18 @@
 import { damagedPhoto } from "../utils/constants";
 export default class Card {
-  constructor({cardTemplateSelector, cardDescription, handleCardClick, handleLikeButtonClickCallback, handleDeleteButtonClickCallback}) {
+  constructor({ cardTemplateSelector,
+                cardDescription,
+                handleCardClick,
+                handleLikeCardCallback,
+                handleDeleteLikeCallback,
+                handleDeleteCardCallback
+  }) {
     this._cardTemplateSelector = cardTemplateSelector;
     this._cardDescription = cardDescription;
     this._handleCardClick = handleCardClick;
-    this._handleLikeButtonClickCallback = handleLikeButtonClickCallback;
-    this._handleDeleteButtonClickCallback = handleDeleteButtonClickCallback;
+    this._handleLikeCardCallback = handleLikeCardCallback;
+    this._handleDeleteLikeCallback = handleDeleteLikeCallback;
+    this._handleDeleteCardCallback = handleDeleteCardCallback;
   }
 
   createCard() {
@@ -24,6 +31,13 @@ export default class Card {
     return this._cardElement;
   }
 
+  getId() {
+    return this._cardDescription._id;
+  }
+
+  remove() {
+    this._cardElement.remove();
+  }
 
   _fillCard() {
     this._cardTitle.textContent = this._cardDescription.name;
@@ -44,6 +58,16 @@ export default class Card {
     this._cardImage.addEventListener('click', ()=>{this._handlePhotoClick()});
   }
 
+  updateLikeInfo({isLiked, numberOfLikes}) {
+    if (isLiked) {
+      this._setLike();
+    }
+    else {
+      this._removeLike();
+    }
+    this._changeLikesCounter(numberOfLikes);
+  }
+
   _setLike() {
     this._cardLikeButton.classList.add('like-button_filled');
   }
@@ -57,40 +81,18 @@ export default class Card {
   }
 
   _handleLikeButtonClick() {
-    let isLike;
     //Если на момент клика, лайк стоял - значит произошло событие снятия лайка
     if (this._cardLikeButton.classList.contains('like-button_filled')) {
-      this._removeLike();
-      isLike = false;
+      this._handleDeleteLikeCallback();
     }
     else {
-      this._setLike();
-      isLike = true;
+      this._handleLikeCardCallback();
     }
 
-    this._handleLikeButtonClickCallback(isLike, this._cardDescription._id)
-    .then((numberOfLikes)=>{
-      this._changeLikesCounter(numberOfLikes);
-    })
-    .catch(()=>{
-      console.error(`Запрос ${isLike ? 'постановки':'снятия' } лайка завершился с ошибкой, действие отменено`);
-      if (isLike) {
-        this._removeLike();
-      }
-      else {
-        this._setLike();
-      }
-    })
   }
 
   _handleDeleteButtonClick() {
-    this._handleDeleteButtonClickCallback(this._cardDescription._id)
-    .then(()=>{
-      this._cardElement.remove();
-    })
-    .catch(()=>{
-      console.log('Карточка не удалена из-за ошибки в this._handleDeleteButtonClickCallback')
-    })
+    this._handleDeleteCardCallback(this._cardDescription._id);
   }
 
   _handleImageError() {

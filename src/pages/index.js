@@ -11,11 +11,16 @@ import {settings,
         addCardForm,
         editProfileForm,
         updateAvatarForm,
+        editButton,
+        addButton,
+        updateAvatarButton,
         nameInput,
         statusInput,
         apiKey,
         groupId
 } from '../scripts/utils/constants.js'
+
+
 
 import '../pages/index.css';
 
@@ -30,7 +35,6 @@ const substituteTextInEditProfileForm = ({name, status})=>{
 }
 
 //=============================== Form Validators =============================
-
 const editProfileFormValidator = new FormValidator(settings, editProfileForm);
 const addCardFormValidator = new FormValidator(settings, addCardForm);
 const updateAvatarFormValidator = new FormValidator(settings, updateAvatarForm)
@@ -39,9 +43,7 @@ addCardFormValidator.enableValidation();
 updateAvatarFormValidator.enableValidation();
 
 //============================ Buttons ========================================
-const editButton = document.querySelector('.profile__edit-button');
-const addButton = document.querySelector('.profile__add-button');
-const updateAvatarButton = document.querySelector('.profile__avatar-container');
+
 
 addButton.addEventListener('click', ()=>{
   addCardFormValidator.toggleButtonState();
@@ -53,7 +55,6 @@ editButton.addEventListener('click',()=>{
   editProfilePopup.open();
 });
 
-
 updateAvatarButton.addEventListener('click', ()=>{
   updateAvatarPopup.open();
 })
@@ -62,13 +63,20 @@ updateAvatarButton.addEventListener('click', ()=>{
 const photoPopup = new PopupWithImage('#photo-popup');
 const editProfilePopup = new PopupWithForm('#edit-profile-popup', (inputList)=>{
   editProfilePopup.setFormWaiting();
-  api.sendEditProfileRequest({name: inputList.name, about: inputList.status}).then((data)=>{
+  api.sendEditProfileRequest({name: inputList.name, about: inputList.status})
+  .then((data)=>{
     userInfo.setUserInfo({
       name: data.name,
       status: data.about,
       avatarLink: data.avatar
     });
     editProfilePopup.clearFormWaiting();
+    editProfilePopup.close();
+  })
+  .catch(()=>{
+    editProfilePopup.clearFormWaiting();
+    editProfilePopup.close();
+    console.log('При редактировании даных пользователя произошла ошибка');
   })
 });
 
@@ -78,9 +86,11 @@ const addCardPopup = new PopupWithForm('#add-card-popup', (inputList)=>{
   .then((data)=>{
     cardList.insertElement(createCard(data));
     addCardPopup.clearFormWaiting();
+    addCardPopup.close();
   })
   .catch(()=>{
     addCardPopup.clearFormWaiting();
+    addCardPopup.close();
     console.log('При добавлении карточки произошла ошибка');
   })
 });
@@ -95,20 +105,20 @@ const updateAvatarPopup = new PopupWithForm('#update-avatar-popup', (inputList)=
       avatarLink: data.avatar
     });
     updateAvatarPopup.clearFormWaiting();
+    updateAvatarPopup.close();
   })
   .catch(()=>{
     updateAvatarPopup.clearFormWaiting();
+    updateAvatarPopup.close();
     console.log('При обновлении данных пользователя произошла ошибка');
   })
 })
-
-const confirmationPopup = new PopupWithConfirmation('#confirmation-popup');
-
 
 updateAvatarPopup.setEventListeners();
 photoPopup.setEventListeners();
 editProfilePopup.setEventListeners();
 addCardPopup.setEventListeners();
+
 //============================= User Info =====================================
 
 const userInfo = new UserInfo({
@@ -118,32 +128,25 @@ const userInfo = new UserInfo({
   userId: undefined
 });
 
-api.getUserInfo()
-  .then((data)=>{
-    userInfo.setUserInfo({
-      name: data.name,
-      status: data.about,
-      avatarLink: data.avatar,
-      userId: data._id
-    });
+//================================ Cards ======================================
+const handleCardDeletion = (card)=>{
+  api.sendDeleteCardRequest(card.getId())
+  .then(()=>{
+    card.remove();
+    confirmationPopup.close();
   })
   .catch(()=>{
-    console.log('При запросе данных пользователя произошла ошибка')
-  });
-
-//================================ Cards ======================================
-
-const handleCardDeletion = (cardId)=>{
-  return new Promise((resolve, reject)=>{
-    confirmationPopup.open()
-    .then(()=>{
-      api.sendDeleteCardRequest(cardId)
-      .then(resolve)
-      .catch(reject)
-    })
-    .catch()
-  });
+    console.log('Удаление карточки не выполнено! Произошла ошибка при отправке запроса.')
+  })
 }
+
+const cardList = new Section({
+  items:[],
+  renderer: (item)=>{
+    cardList.insertElement(createCard(item));
+  }
+}, '.photo-cards');
+
 
 const createCard = function(item) {
   const myId = userInfo.getUserInfo().userId;
@@ -159,62 +162,59 @@ const createCard = function(item) {
     handleCardClick: ()=>{
       photoPopup.open(item);
     },
-    handleLikeButtonClickCallback: (isLike, cardId)=>{
-      return new Promise((resolve, reject)=>{
-        if (isLike) {
-          api.sendPutLikeCardRequest(cardId)
-          .then((data)=>{
-            resolve(data.likes.length);
-          })
-          .catch(()=>{
-            reject();
-          })
-        }
-        else {
-          api.sendDeleteLikeCardRequest(cardId)
-          .then((data)=>{
-            resolve(data.likes.length);
-          })
-          .catch(()=>{
-            reject();
-          })
-        }
+    handleLikeCardCallback: ()=>{
+      api.sendPutLikeCardRequest(card.getId())
+      .then((data)=>{
+        card.updateLikeInfo({
+          isLiked: true,
+          numberOfLikes: data.likes.length
+        })
       })
+      .catch(()=>{
+        console.error('Лайк не установлен! Произошла ошибка')
+      });
     },
-    handleDeleteButtonClickCallback: handleCardDeletion
+    handleDeleteLikeCallback: ()=>{
+      api.sendDeleteLikeCardRequest(card.getId())
+      .then((data)=>{
+        card.updateLikeInfo({
+          isLiked: false,
+          numberOfLikes: data.likes.length
+        })
+      })
+      .catch(()=>{
+        console.error('Лайк не установлен! Произошла ошибка')
+      });
+    },
+    handleDeleteCardCallback: ()=>{
+      confirmationPopup.open(card)
+    }
   });
   return card.createCard();
 }
 
 
-const cardList = new Section({
-  items:[],
-  renderer: (item)=>{
-    cardList.insertElement(createCard(item));
-  }
-}, '.photo-cards');
+const confirmationPopup = new PopupWithConfirmation('#confirmation-popup', handleCardDeletion);
+confirmationPopup.setEventListeners();
 
+Promise.all([api.getUserInfo(), api.getCardSet()])
+  .then(([ userData, cards ]) => {
+    userInfo.setUserInfo({
+      name: userData.name,
+      status: userData.about,
+      avatarLink: userData.avatar,
+      userId: userData._id
+    });
 
-const requestInitialCards = function(){
-  cardList._items = [];
-  api.getCardSet()
-  .then((data)=>{
-    data.forEach(item => {
+    cards.forEach(item => {
       cardList.addItem(item);
     });
     cardList.renderItems();
+
   })
-  .catch((err)=>{
-    // Реконнект в случае ошибки
-    setTimeout(requestInitialCards, 5000)
+  .catch(()=>{
+    console.log('При запросе данных пользователя произошла ошибка')
   });
-}
-
-requestInitialCards();
-
-
-
-
 
 
 
