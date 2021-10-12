@@ -75,7 +75,6 @@ const editProfilePopup = new PopupWithForm('#edit-profile-popup', (inputList)=>{
   })
   .catch(()=>{
     editProfilePopup.clearFormWaiting();
-    editProfilePopup.close();
     console.log('При редактировании даных пользователя произошла ошибка');
   })
 });
@@ -90,7 +89,6 @@ const addCardPopup = new PopupWithForm('#add-card-popup', (inputList)=>{
   })
   .catch(()=>{
     addCardPopup.clearFormWaiting();
-    addCardPopup.close();
     console.log('При добавлении карточки произошла ошибка');
   })
 });
@@ -109,7 +107,6 @@ const updateAvatarPopup = new PopupWithForm('#update-avatar-popup', (inputList)=
   })
   .catch(()=>{
     updateAvatarPopup.clearFormWaiting();
-    updateAvatarPopup.close();
     console.log('При обновлении данных пользователя произошла ошибка');
   })
 })
